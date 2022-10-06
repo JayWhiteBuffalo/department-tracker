@@ -7,7 +7,6 @@ const viewAllDepartments  = () => {
     M.findAllDepartments()
     .then(([rows]) => {
         let departments = rows;
-        console.log('\n');
         console.table(departments);
     });
 };
