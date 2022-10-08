@@ -1,4 +1,5 @@
 const mysql = require('mysql2');
+const { findAllRoles } = require('.');
 //const Connection = require('mysql2/typings/mysql/lib/Connection');
 
 
@@ -15,9 +16,11 @@ const connection = mysql.createConnection(
     }
 );
 
+
 connection.connect(function (err) {
     if (err) throw err;
     console.log("Welcome to Department Tracker");
+
     
 });
 

@@ -2,6 +2,15 @@ const M = require('./db');
 const cTable = require('console.table');
 const inquirer  = require('inquirer');
 const { addEmployee, addDepartment, addRole, removeRole, removeEmployee } = require('./db');
+const connection = require('./db/connection');
+
+
+const roleArr = function getRoles() {
+    connection.query("SELECT * from roles", function(error, res) {
+        let allroles = res.map(roles => ({ name: roles.title, value: roles.id}));
+        return allroles;
+    });}
+
 
 
 
@@ -99,11 +108,13 @@ const newEmployee  = () => {
         type:"input",
         message:"Enter last name"
         },
+        //return name data in obj for later use
+        //locate roles from db query
         {
         name:"role",
         type:"list",
         message:"Select role",
-        choices:""
+        choices: ""
         },
         {
         name:"manager",
@@ -130,4 +141,5 @@ const newEmployee  = () => {
 
 
 startApp();
+
 
