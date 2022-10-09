@@ -120,25 +120,28 @@ const newEmployee  = () => {
            let roleAnswer = answers;
            newEmp.push(roleAnswer);
            console.log(newEmp);
-        }
-    )})})
-    //     inquirer.prompt(
-    //     //return name data in obj for later use
-    //     //locate roles from db query
-    //     {
-    //     name:"role",
-    //     type:"list",
-    //     message:"Select role",
-    //     choices: ""
-    //     },
-    //     {
-    //     name:"manager",
-    //     type:"confirm",
-    //     message:"Is this person a Manager?",
-    //     }
-    // )
-    
-    };
+        
+        inquirer.prompt([
+         {
+         name:"manager",
+         type:"confirm",
+         message:"Is this person a Manager?",
+         }])
+        .then((answer) => {
+            console.log(answer);
+            //create obj with manager_id element
+            //if true, check to see if manager for department already exists
+            //if does not exist, get manager_id obj new corresponding value
+            //if does exists console log 'This Department Already has a manager'
+            //run false
+            //if false, give manager id element value of 'null
+            //push object to newEmp
+            //run M.newEmployee with newEmp values
+            //check to see if worked
+        })
+    }
+) 
+})})}
 
 
 
