@@ -5,11 +5,11 @@ const { addEmployee, addDepartment, addRole, removeRole, removeEmployee } = requ
 const connection = require('./db/connection');
 
 
-const roleArr = function getRoles() {
-    connection.query("SELECT * from roles", function(error, res) {
-        let allroles = res.map(roles => ({ name: roles.title, value: roles.id}));
-        return allroles;
-    });}
+const roleChoices = async() => {
+    const roleQuery = `SELECT roles.id, roles.title FROM roles;`;
+    const roles = await connection.query(roleQuery);
+        return roles[0];
+};
 
 
 
@@ -97,7 +97,8 @@ const viewAllRoles  = () => {
 };
 
 const newEmployee  = () => {
-    inquirer.prompt(
+    getRoles();
+    inquirer.prompt([
         {
         name:"first_name",
         type:"input",
@@ -108,27 +109,40 @@ const newEmployee  = () => {
         type:"input",
         message:"Enter last name"
         },
-        //return name data in obj for later use
-        //locate roles from db query
         {
-        name:"role",
-        type:"list",
-        message:"Select role",
-        choices: ""
+        name: "role",
+        type: "list",
+        message: "What is their role?",
+        choices: await roleChoices(),
+        when(answers) {
+            return answers.task;
         },
-        {
-        name:"manager",
-        type:"confirm",
-        message:"Is this person a Manager?",
+        }
+    
+    ])
+        .then(answers => {
+           let nameArr = [];
+           nameArr.push(answers);
+           console.log(nameArr);
         }
     )
-    M.addEmployee()
-    .then(([rows]) => {
-        let employees = rows;
-        console.table(employees);
-        startApp();
-    });
-};
+    //     inquirer.prompt(
+    //     //return name data in obj for later use
+    //     //locate roles from db query
+    //     {
+    //     name:"role",
+    //     type:"list",
+    //     message:"Select role",
+    //     choices: ""
+    //     },
+    //     {
+    //     name:"manager",
+    //     type:"confirm",
+    //     message:"Is this person a Manager?",
+    //     }
+    // )
+    
+    };
 
 
 
