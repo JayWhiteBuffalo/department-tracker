@@ -45,6 +45,16 @@ addDepartment(){
             'INSERT INTO department (name) VALUES (?)'
         );
 }
+
+//Role choices
+getRoleChoices() {
+    return this.connection
+        .promise()
+        .query(
+            'SELECT roles.id AS value, roles.title AS name FROM roles'
+        );
+}
+
 //Add role
 addRole() {
     return this.connection

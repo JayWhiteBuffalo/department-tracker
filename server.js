@@ -5,13 +5,6 @@ const { addEmployee, addDepartment, addRole, removeRole, removeEmployee } = requ
 const connection = require('./db/connection');
 
 
-const roleChoices = async() => {
-    const roleQuery = `SELECT roles.id, roles.title FROM roles;`;
-    const roles = await connection.query(roleQuery);
-        return roles[0];
-};
-
-
 
 
 function startApp() {
@@ -97,7 +90,6 @@ const viewAllRoles  = () => {
 };
 
 const newEmployee  = () => {
-    getRoles();
     inquirer.prompt([
         {
         name:"first_name",
@@ -108,24 +100,28 @@ const newEmployee  = () => {
         name:"last_name",
         type:"input",
         message:"Enter last name"
-        },
+        }
+    ])
+    .then((answers) => {
+        //logging answers into new array
+        var newEmp = [{fname : answers.first_name, lname : answers.last_name}];
+        // Get roles from db in proper name/value format for inquirer
+        M.getRoleChoices().then(([rows]) => {
+        inquirer.prompt([
         {
-        name: "role",
+        name: "role_id",
         type: "list",
         message: "What is their role?",
-        choices: await roleChoices(),
-        when(answers) {
-            return answers.task;
+        choices: rows
         },
-        }
-    
     ])
-        .then(answers => {
-           let nameArr = [];
-           nameArr.push(answers);
-           console.log(nameArr);
+        .then((answers) => {
+        
+           let roleAnswer = answers;
+           newEmp.push(roleAnswer);
+           console.log(newEmp);
         }
-    )
+    )})})
     //     inquirer.prompt(
     //     //return name data in obj for later use
     //     //locate roles from db query
