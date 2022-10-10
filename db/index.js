@@ -55,6 +55,14 @@ getRoleChoices() {
         );
 }
 
+ManagerChoices() {
+    return this.connection 
+        .promise()
+        .query(
+            'SELECT * FROM employee WHERE manager_id IS NOT NULL'
+        )
+}
+
 //Add role
 addRole() {
     return this.connection
@@ -99,6 +107,7 @@ removeEmployee() {
             'DELETE FROM employee WHERE id = ?'
         )
 }
+
 //View the total utilizaed budget of a department **bonus**
 //View employees by manager ** Bonus **
 findEmployeeByManager () {

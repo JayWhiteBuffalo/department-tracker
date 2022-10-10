@@ -1,7 +1,7 @@
 const M = require('./db');
 const cTable = require('console.table');
 const inquirer  = require('inquirer');
-const { addEmployee, addDepartment, addRole, removeRole, removeEmployee } = require('./db');
+const { addEmployee, addDepartment, addRole, removeRole, removeEmployee, getDepartmentId } = require('./db');
 const connection = require('./db/connection');
 
 
@@ -107,6 +107,7 @@ const newEmployee  = () => {
         var newEmp = [{fname : answers.first_name, lname : answers.last_name}];
         // Get roles from db in proper name/value format for inquirer
         M.getRoleChoices().then(([rows]) => {
+            console.log(rows);
         inquirer.prompt([
         {
         name: "role_id",
@@ -120,25 +121,26 @@ const newEmployee  = () => {
            let roleAnswer = answers;
            newEmp.push(roleAnswer);
            console.log(newEmp);
-        
+        M.ManagerChoices().then(([rows]) => {
+            const managerChoices = rows.map(
+                ({first_name, last_name, manager_id}) => (
+                    {
+                    name:`${first_name} ${last_name}`,
+                    value: manager_id,
+                    }
+                )
+            );
+            console.log(managerChoices);
         inquirer.prompt([
          {
          name:"manager",
-         type:"confirm",
-         message:"Is this person a Manager?",
+         type:"list",
+         message:"Who is their Manager?",
+         choice: managerChoices
          }])
         .then((answer) => {
             console.log(answer);
-            //create obj with manager_id element
-            //if true, check to see if manager for department already exists
-            //if does not exist, get manager_id obj new corresponding value
-            //if does exists console log 'This Department Already has a manager'
-            //run false
-            //if false, give manager id element value of 'null
-            //push object to newEmp
-            //run M.newEmployee with newEmp values
-            //check to see if worked
-        })
+        })})
     }
 ) 
 })})}
