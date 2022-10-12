@@ -49,7 +49,7 @@ function startApp() {
                 break;
                 
             case "Add Role":
-                newRole();
+                createRole();
                 break;
                 
             case "Remove Role":
@@ -62,7 +62,7 @@ function startApp() {
         }
     });
 }
-
+//View All Employees    
 const viewAllEmployees  = () => {
     M.findAllEmployees()
     .then(([rows]) => {
@@ -71,7 +71,7 @@ const viewAllEmployees  = () => {
         startApp();
     });
 };
-
+// View Departments
 const viewAllDepartments  = () => {
     M.findAllDepartments()
     .then(([rows]) => {
@@ -81,6 +81,7 @@ const viewAllDepartments  = () => {
     });
 };
 
+//View all roles
 const viewAllRoles  = () => {
     M.findAllRoles()
     .then(([rows]) => {
@@ -188,7 +189,59 @@ const deleteEmployee = () => {
         console.log("Employee has been removed")
         startApp();
     })
-    })}
+    })};
+
+    //Add Roles
+     const createRole = () => {
+        roleArr = [];
+        M.findAllDepartments().then(([rows]) => {
+            let departmentChoices = rows.map((
+                {id, name}) => (
+                    {
+                    name : name,
+                    value: id
+                    }
+                )
+            )
+        inquirer.prompt(
+            {
+            name: "department",
+            type: "list",
+            message: "Which department does this role work in?",
+            choices: departmentChoices
+            }
+        ).then((department) => {
+            roleArr.push(department)
+            console.log(roleArr)
+        }).then(() => 
+        inquirer.prompt([
+            {
+            name: "title",
+            type: "input",
+            message: "Enter the name of this new role"
+            },
+            {
+            name:"salary",
+            type:"input",
+            message: "Enter a Salary for this role"
+            }
+        ])
+        .then((answers) => {
+            roleArr.push(answers)
+            let newRoleData = {
+                title : roleArr[1].title,
+                salary: roleArr[1].salary,
+                department_id: roleArr[0].department
+            }
+            M.addRole(newRoleData);
+            console.log("New Role has been added!")})
+            .then(() => 
+            startApp())
+        
+        
+     )})};
+
+
 
 
 

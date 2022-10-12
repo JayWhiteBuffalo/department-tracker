@@ -46,6 +46,7 @@ addDepartment(){
         );
 }
 
+//Employee Choices
 getEmployeeChoices() {
     return this.connection
         .promise()
@@ -72,11 +73,11 @@ ManagerChoices() {
 }
 
 //Add role
-addRole() {
+addRole(newRole) {
     return this.connection
         .promise()
         .query(
-            'INSERT INTO roles (title, salary, department_id) VALUES (?,?,?)'
+            `INSERT INTO roles SET ?` , newRole
         )
 }
 //Add employee
@@ -112,7 +113,7 @@ removeEmployee(employeeId) {
     return this.connection
         .promise()
         .query(
-            `DELETE FROM employee WHERE id = ?`,employeeId
+            `DELETE FROM employee WHERE id = ?`,employeeId  
         )
 }
 
