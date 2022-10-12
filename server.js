@@ -53,7 +53,7 @@ function startApp() {
                 break;
                 
             case "Remove Role":
-                removeRole();
+                removeRoles();
                 break;
     
             case "Remove Employee":
@@ -237,9 +237,26 @@ const deleteEmployee = () => {
             console.log("New Role has been added!")})
             .then(() => 
             startApp())
-        
-        
-     )})};
+         )})};
+    
+// Remove Roles
+const removeRoles = () => {
+    M.getRoleChoices().then(([rows]) => {
+        console.log(rows)
+        inquirer.prompt(
+            {
+            name:"role_id",
+            type: "list",
+            message: "Which Role would you like to Remove?",
+            choices: rows
+            })
+        .then((answer) => {
+            M.removeRole(answer.role_id)
+            console.log("Role has been removed")
+            startApp();
+        })
+    })
+}
 
 
 

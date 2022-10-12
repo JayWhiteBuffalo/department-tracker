@@ -101,11 +101,11 @@ removeDepartment() {
         )
 }
 //Delete a role
-removeRole() {
+removeRole(roleId) {
     return this.connection
         .promise()
         .query(
-            'DELETE FROM roles WHERE title = ?'
+            'DELETE FROM roles WHERE id = ?', roleId
         )
 }
 //Delete an employee
