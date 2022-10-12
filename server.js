@@ -51,6 +51,10 @@ function startApp() {
             case "Add Role":
                 createRole();
                 break;
+
+            case "Remove Department":
+                removeDepartment();
+                break;
                 
             case "Remove Role":
                 removeRoles();
@@ -75,8 +79,7 @@ const viewAllEmployees  = () => {
 const viewAllDepartments  = () => {
     M.findAllDepartments()
     .then(([rows]) => {
-        let departments = rows;
-        console.table(departments);
+        console.table(rows);
         startApp();
     });
 };
@@ -194,15 +197,8 @@ const deleteEmployee = () => {
     //Add Roles
      const createRole = () => {
         roleArr = [];
-        M.findAllDepartments().then(([rows]) => {
-            let departmentChoices = rows.map((
-                {id, name}) => (
-                    {
-                    name : name,
-                    value: id
-                    }
-                )
-            )
+        M.getDepartmentChoices().then(([rows]) => {
+            let departmentChoices = rows
         inquirer.prompt(
             {
             name: "department",
@@ -274,8 +270,24 @@ const newDepartment = () => {
     })
 };
 
-
 //Remove Department
+const removeDepartment = () => {
+    M.getDepartmentChoices().then(([rows]) => {
+        inquirer.prompt(
+            {
+            name:"department_id",
+            type: "list",
+            message: "Which department would like to Remove?",
+            choices: rows
+            }
+        )
+        .then((answer) => {
+            M.removeDepartment(answer.department_id)
+            console.log("Department has been removed")
+            startApp();
+        })
+    })
+}
 
 
 

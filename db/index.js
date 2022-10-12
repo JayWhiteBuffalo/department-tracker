@@ -46,6 +46,16 @@ addDepartment(department){
         );
 }
 
+
+//Get department Choices
+getDepartmentChoices() {
+    return this.connection
+        .promise()
+        .query(
+            "SELECT name, id AS value FROM department"
+        );
+}
+
 //Employee Choices
 getEmployeeChoices() {
     return this.connection
@@ -93,11 +103,11 @@ addEmployee(employee) {
 //Update employee manager **Bonus**
 
 //Delete a department
-removeDepartment() {
+removeDepartment(department) {
     return this.connection
         .promise()
         .query(
-            'DELETE FROM department WHERE name = ?'
+            `DELETE FROM department WHERE id = ?`, department
         )
 }
 //Delete a role
