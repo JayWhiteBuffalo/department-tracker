@@ -46,6 +46,14 @@ addDepartment(){
         );
 }
 
+getEmployeeChoices() {
+    return this.connection
+        .promise()
+        .query(
+            'SELECT first_name, last_name, id AS value FROM employee'
+        );
+}
+
 //Role choices
 getRoleChoices() {
     return this.connection
@@ -100,11 +108,11 @@ removeRole() {
         )
 }
 //Delete an employee
-removeEmployee() {
+removeEmployee(employeeId) {
     return this.connection
         .promise()
         .query(
-            'DELETE FROM employee WHERE id = ?'
+            `DELETE FROM employee WHERE id = ?`,employeeId
         )
 }
 

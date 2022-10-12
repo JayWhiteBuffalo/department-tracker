@@ -3,6 +3,7 @@ const cTable = require('console.table');
 const inquirer  = require('inquirer');
 const { addEmployee, addDepartment, addRole, removeRole, removeEmployee, getDepartmentId } = require('./db');
 const connection = require('./db/connection');
+const { listenerCount } = require('./db/connection');
 
 
 
@@ -56,7 +57,7 @@ function startApp() {
                 break;
     
             case "Remove Employee":
-                removeEmployee();
+                deleteEmployee();
                 break;
         }
     });
@@ -89,6 +90,7 @@ const viewAllRoles  = () => {
     });
 };
 
+//Add Employee
 const newEmployee  = () => {
     inquirer.prompt([
         {
@@ -149,7 +151,7 @@ const newEmployee  = () => {
             console.log(employeeData);
             M.addEmployee(employeeData)
             .then(() => 
-                console.log(employeeData.first_name + employeeData.last_name + "has been added to the company database!"))
+                console.log(employeeData.first_name + " " + employeeData.last_name + "has been added to the company database!"))
                 .then(() =>
                 startApp())
             
@@ -158,7 +160,35 @@ const newEmployee  = () => {
         )}) 
 })
 
-}
+};
+
+// Delete Employee
+
+const deleteEmployee = () => {
+    M.getEmployeeChoices().then(([rows]) => {
+        let employeeChoices = rows.map((
+            {first_name, last_name, value}) => (
+                {
+                name: `${first_name} ${last_name}`,
+                value: value,
+                }
+            )
+        )
+    
+    inquirer.prompt (
+        {
+        name: "manager_id",
+        type: "list",
+        message: "Which employee would you like to remove?",
+        choices: employeeChoices
+    })
+    .then ((answer) => {
+        console.log(answer)
+        M.removeEmployee(answer.manager_id)
+        console.log("Employee has been removed")
+        startApp();
+    })
+    })}
 
 
 
