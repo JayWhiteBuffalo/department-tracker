@@ -256,7 +256,26 @@ const removeRoles = () => {
             startApp();
         })
     })
-}
+};
+
+//Add Department
+const newDepartment = () => {
+    inquirer.prompt(
+        {
+        name: "name",
+        type: "input",
+        message: "Enter a name for the new Department"
+        }
+    )
+    .then((answer) => {
+        M.addDepartment(answer)
+        console.log("Department has been created!")
+        startApp();
+    })
+};
+
+
+//Remove Department
 
 
 

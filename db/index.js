@@ -38,11 +38,11 @@ findAllEmployees() {
 
 
 //Add department
-addDepartment(){
+addDepartment(department){
     return this.connection
         .promise()
         .query(
-            'INSERT INTO department (name) VALUES (?)'
+            `INSERT INTO department SET ?`, department
         );
 }
 
