@@ -59,7 +59,7 @@ ManagerChoices() {
     return this.connection 
         .promise()
         .query(
-            'SELECT * FROM employee WHERE manager_id IS NOT NULL'
+            'SELECT first_name, last_name, manager_id FROM employee WHERE manager_id IS NOT NULL '
         )
 }
 
@@ -72,11 +72,11 @@ addRole() {
         )
 }
 //Add employee
-addEmployee() {
+addEmployee(employee) {
     return this.connection
         .promise()
         .query(
-            'INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES (?,?,?,?)'
+            `INSERT INTO employee SET ?` , employee
         )
 }
 //Update employee role **Bonus**

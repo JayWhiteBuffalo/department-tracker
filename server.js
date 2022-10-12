@@ -136,14 +136,29 @@ const newEmployee  = () => {
          name:"manager",
          type:"list",
          message:"Who is their Manager?",
-         choice: managerChoices
+         choices: managerChoices
          }])
         .then((answer) => {
-            console.log(answer);
-        })})
-    }
-) 
-})})}
+            let managerID = answer;
+            let employeeData = {
+                first_name: newEmp[0].fname,
+                last_name: newEmp[0].lname,
+                role_id: newEmp[1].role_id,
+                manager_id: managerID.manager,
+            }
+            console.log(employeeData);
+            M.addEmployee(employeeData)
+            .then(() => 
+                console.log(employeeData.first_name + employeeData.last_name + "has been added to the company database!"))
+                .then(() =>
+                startApp())
+            
+    })
+        })}
+        )}) 
+})
+
+}
 
 
 
@@ -156,5 +171,4 @@ const newEmployee  = () => {
 
 
 startApp();
-
 
