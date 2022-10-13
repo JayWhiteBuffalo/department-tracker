@@ -4,6 +4,7 @@ const inquirer  = require('inquirer');
 const { addEmployee, addDepartment, addRole, removeRole, removeEmployee, getDepartmentId } = require('./db');
 const connection = require('./db/connection');
 const { listenerCount } = require('./db/connection');
+const e = require('express');
 
 
 
@@ -17,6 +18,7 @@ function startApp() {
             "View All Employees",
             "View All Departments",
             "View All Roles",
+            "Update Employee",
             "Add Employee",
             "Add Department",
             "Add Role",
@@ -62,6 +64,10 @@ function startApp() {
     
             case "Remove Employee":
                 deleteEmployee();
+                break;
+
+            case "Update Employee":
+                updateEmployee();
                 break;
         }
     });
@@ -289,7 +295,49 @@ const removeDepartment = () => {
     })
 }
 
-
+//Update Employee
+const updateEmployee = () => {
+    M.getEmployeeChoices().then(([rows]) => {
+        const employeeChoices = rows.map(
+            ({first_name, last_name, value}) => (
+                {
+                name:`${first_name} ${last_name}`,
+                value: value,
+                }
+            )
+            
+        );
+        inquirer.prompt([
+            {
+            name: "id",
+            type:"list",
+            message: "Which employee would you like to update?",
+            choices: employeeChoices
+            }
+        ])
+        .then((answer) => {
+            M.getRoleChoices().then(([rows]) => {
+                inquirer.prompt([
+                    {
+                    name: "role_id",
+                    type: "list",
+                    message: "What is the new Role for this Employee?",
+                    choices: rows
+                    }
+                ])
+            .then((data) => {
+                let employeeID = answer.id;
+                let roleID = data.role_id;
+                console.log(employeeID)
+                console.log(roleID)
+                M.updateEmployeeRole(employeeID, roleID)
+                console.log("Role has been Updated!")
+                startApp();
+            });
+            });
+        });
+    });
+};
 
 
 

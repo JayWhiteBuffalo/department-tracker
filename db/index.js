@@ -98,7 +98,14 @@ addEmployee(employee) {
             `INSERT INTO employee SET ?` , employee
         )
 }
-//Update employee role **Bonus**
+//Update employee role
+updateEmployeeRole(employeeID, roleID) {
+    return this.connection
+        .promise()
+        .query(`UPDATE employee SET role_id = ? WHERE id = ?`, [roleID, employeeID]
+
+        )
+}
 
 //Update employee manager **Bonus**
 
