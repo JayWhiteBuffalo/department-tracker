@@ -25,7 +25,7 @@ function startApp() {
             "Remove Department",
             "Remove Role",
             "Remove Employee",
-            "Exist"
+            "Exit"
         ]
     })
     .then(function(answer){
@@ -69,6 +69,11 @@ function startApp() {
             case "Update Employee":
                 updateEmployee();
                 break;
+
+            case "Quit":
+                exit();
+                break;
+
         }
     });
 }
@@ -119,7 +124,6 @@ const newEmployee  = () => {
         var newEmp = [{fname : answers.first_name, lname : answers.last_name}];
         // Get roles from db in proper name/value format for inquirer
         M.getRoleChoices().then(([rows]) => {
-            console.log(rows);
         inquirer.prompt([
         {
         name: "role_id",
@@ -132,7 +136,6 @@ const newEmployee  = () => {
         
            let roleAnswer = answers;
            newEmp.push(roleAnswer);
-           console.log(newEmp);
         M.ManagerChoices().then(([rows]) => {
             const managerChoices = rows.map(
                 ({first_name, last_name, manager_id}) => (
@@ -142,7 +145,6 @@ const newEmployee  = () => {
                     }
                 )
             );
-            console.log(managerChoices);
         inquirer.prompt([
          {
          name:"manager",
@@ -158,7 +160,6 @@ const newEmployee  = () => {
                 role_id: newEmp[1].role_id,
                 manager_id: managerID.manager,
             }
-            console.log(employeeData);
             M.addEmployee(employeeData)
             .then(() => 
                 console.log(employeeData.first_name + " " + employeeData.last_name + "has been added to the company database!"))
@@ -193,7 +194,6 @@ const deleteEmployee = () => {
         choices: employeeChoices
     })
     .then ((answer) => {
-        console.log(answer)
         M.removeEmployee(answer.manager_id)
         console.log("Employee has been removed")
         startApp();
@@ -214,7 +214,6 @@ const deleteEmployee = () => {
             }
         ).then((department) => {
             roleArr.push(department)
-            console.log(roleArr)
         }).then(() => 
         inquirer.prompt([
             {
@@ -244,7 +243,6 @@ const deleteEmployee = () => {
 // Remove Roles
 const removeRoles = () => {
     M.getRoleChoices().then(([rows]) => {
-        console.log(rows)
         inquirer.prompt(
             {
             name:"role_id",
@@ -328,8 +326,6 @@ const updateEmployee = () => {
             .then((data) => {
                 let employeeID = answer.id;
                 let roleID = data.role_id;
-                console.log(employeeID)
-                console.log(roleID)
                 M.updateEmployeeRole(employeeID, roleID)
                 console.log("Role has been Updated!")
                 startApp();
@@ -339,6 +335,10 @@ const updateEmployee = () => {
     });
 };
 
+const exit = () => {
+    console.log("Thank you for using Department Tracker. Farewell");
+    process.exit();
+};
 
 
 

@@ -55,8 +55,8 @@ getDepartmentChoices() {
             "SELECT name, id AS value FROM department"
         );
 }
-
-//Employee Choices
+//Choices queries are for inquirer
+//Employee Choices 
 getEmployeeChoices() {
     return this.connection
         .promise()
@@ -107,7 +107,6 @@ updateEmployeeRole(employeeID, roleID) {
         )
 }
 
-//Update employee manager **Bonus**
 
 //Delete a department
 removeDepartment(department) {
@@ -133,19 +132,6 @@ removeEmployee(employeeId) {
             `DELETE FROM employee WHERE id = ?`,employeeId  
         )
 }
-
-//View the total utilizaed budget of a department **bonus**
-//View employees by manager ** Bonus **
-findEmployeeByManager () {
-    return this.connection
-        .promise()
-        .query(
-    
-        )
-
-}
-
-//Quit
 
 
 };
